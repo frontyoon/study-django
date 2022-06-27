@@ -1,16 +1,19 @@
 import numpy as np
 import torch
+import requests
+from io import BytesIO
 
-from model import CustomNet
+from .model import CustomNet
 from PIL import Image
 
-def _output(img_pth, model_pth):
+def _output(img_url, model_pth):
+    img_url = requests.get(img_url)  # requests를 이용해 img를 url로 받아온다.
     model = CustomNet()  # CustomNet 모델을 불러온다.
     model_fn = model_pth  # model_pth=best_model.pth를 model_fn에 할당한다.
     device = torch.device('cpu')
-    model.load_state_dict(torch.load(model_fn, map_location=device), strict=False)  # model의 weight 값을 model_fn으로 설정한다.
+    model.load_state_dict(torch.load(model_fn, device), strict=False)  # model의 weight 값을 model_fn으로 설정한다.
 
-    img = Image.open(img_pth)  # img_pth를 통해 이미지를 img에 할당한다.
+    img = Image.open(BytesIO(img_url.content))  # img_url을 통해 이미지를 img에 할당한다.
     img = np.array(img)  # img의 dtype을 numpy array로 변경한다.
     img = torch.FloatTensor(img)  # img의 dtype을 tensor로 변경한다.
     img = img.permute(2, 0, 1)  # batch_size와 channel수를 바꾼다.
@@ -25,37 +28,37 @@ def _output(img_pth, model_pth):
     # y_hat의 값에 따라 다른 json을 return 한다.
     if y_hat == 0:
         emotion_object = {
-            "angry"
+            "emotion": "angry"
         }
         
         return emotion_object
     elif y_hat == 1:
         emotion_object = {
-            "fear"
+            "emotion": "fear"
         }
         
         return emotion_object
     elif y_hat == 2:
         emotion_object = {
-            "suprised"
+            "emotion": "suprised"
         }
         
         return emotion_object
     elif y_hat == 3:
         emotion_object = {
-            "happy"
+            "emotion": "happy"
         }
         
         return emotion_object
     elif y_hat == 4:
         emotion_object = {
-            "sad"
+            "emotion": "sad"
         }
         
         return emotion_object
     else:
         emotion_object = {
-            "neutural"
+            "emotion": "netural"
         }
         
         return emotion_object
