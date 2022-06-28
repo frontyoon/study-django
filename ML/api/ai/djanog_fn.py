@@ -28,37 +28,37 @@ def _output(img_url, model_pth):
     # y_hat의 값에 따라 다른 json을 return 한다.
     if y_hat == 0:
         emotion_object = {
-            "emotion": "angry"
+            "emotion": "ANGRY"
         }
         
         return emotion_object
     elif y_hat == 1:
         emotion_object = {
-            "emotion": "fear"
+            "emotion": "FEAR"
         }
         
         return emotion_object
     elif y_hat == 2:
         emotion_object = {
-            "emotion": "suprised"
+            "emotion": "SURPRISE"
         }
         
         return emotion_object
     elif y_hat == 3:
         emotion_object = {
-            "emotion": "happy"
+            "emotion": "HAPPY"
         }
         
         return emotion_object
     elif y_hat == 4:
         emotion_object = {
-            "emotion": "sad"
+            "emotion": "SAD"
         }
         
         return emotion_object
     else:
         emotion_object = {
-            "emotion": "netural"
+            "emotion": "NETURAL"
         }
         
         return emotion_object

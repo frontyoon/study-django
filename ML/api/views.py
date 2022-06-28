@@ -1,15 +1,18 @@
+from re import A
+from tokenize import String
 from django.views import View
 import json
 from .ai.djanog_fn import _output
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 import os
+from django.views.decorators.http import require_http_methods
 
 # ai 함수 실행 View
 class PredictView(View):
-    def get(self, request):
+    def post(self, request):
         # body의 json값 받아와서 url 이라는 변수에 저장
         json_object = json.loads(request.body)
-        url = json_object['imageUrl']
+        url = json_object
 
         # 모델 위치 상대 경로
         file_path = os.path.abspath(__file__)
