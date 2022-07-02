@@ -1,11 +1,8 @@
-from re import A
-from tokenize import String
 from django.views import View
 import json
 from .ai.djanog_fn import _output
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 import os
-from django.views.decorators.http import require_http_methods
 
 # ai 함수 실행 View
 class PredictView(View):
